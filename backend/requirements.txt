@@ -9,3 +9,4 @@ SQLAlchemy==2.0.23
 gunicorn==21.2.0
 bcrypt
 gunicorn==21.2.0
+pyodbc
