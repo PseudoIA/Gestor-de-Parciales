@@ -1,4 +1,4 @@
-# Cronogramas Universitarios
+# Cronogramas de actividades academicas
 
 Sistema para la gestión de cronogramas de parciales universitarios que permite a los maestros registrar, editar y eliminar sus propios cronogramas, mientras que los coordinadores pueden ver, editar y eliminar todos los cronogramas.
 
