@@ -66,9 +66,9 @@ def login_user():
     if not usuario or not usuario.check_password(data['password']):
         return jsonify({"error": "Credenciales inválidas"}), 401
     
-    # Generar token de acceso
-    access_token = create_access_token(identity=usuario.id)
-    
+    # Generar token de accesoidentity=str(usuario.id)
+    access_token = create_access_token(identity=str(usuario.id))
+    print(f"--- Login User: Token Generado={access_token}")
     return jsonify({
         "mensaje": "Inicio de sesión exitoso",
         "usuario": usuario.to_dict(),

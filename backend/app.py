@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask,render_template
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from database import init_db
@@ -27,14 +27,16 @@ def create_app():
     # Ruta de prueba
     @app.route('/')
     def index():
+        
         return {
             'mensaje': 'API de Cronogramas Universitarios',
             'version': '1.0',
             'status': 'online'
         }
+
     
     return app
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True) 
+    app.run(debug=True, port=5009) 

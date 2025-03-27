@@ -20,6 +20,7 @@ auth_bp.route('/is-coordinator', methods=['GET'])(check_is_coordinator)
 # Rutas de cronogramas
 @cronogramas_bp.route('', methods=['GET'])
 @jwt_required()
+
 def get_cronogramas():
     """Obtener cronogramas (maestro: solo propios, coordinador: todos)"""
     usuario_id = get_jwt_identity()
@@ -46,24 +47,32 @@ def get_cronogramas():
 @jwt_required()
 def create_cronograma():
     """Crear un nuevo cronograma"""
+    print("--- Iniciando create_cronograma ---") # <-- AÑADIR
     usuario_id = get_jwt_identity()
+    print(f"Usuario ID autenticado: {usuario_id}") # <-- AÑADIR
     data = request.get_json()
-    
-    # Verificar datos requeridos
+    print(f"Datos recibidos del frontend: {data}") # <-- AÑADIR
+
+    # Verificar datos requeridos (sin cambios)
     required_fields = ['titulo', 'materia', 'fecha_inicio', 'fecha_fin']
     for field in required_fields:
         if field not in data:
+            print(f"!!! Error: Falta el campo requerido '{field}'") # <-- AÑADIR
             return jsonify({"error": f"El campo '{field}' es requerido"}), 400
-    
+
     try:
+        print("Intentando convertir fechas...") # <-- AÑADIR
         # Convertir fechas de string a datetime
         fecha_inicio = datetime.fromisoformat(data['fecha_inicio'])
         fecha_fin = datetime.fromisoformat(data['fecha_fin'])
-        
+        print(f"Fechas convertidas: Inicio={fecha_inicio}, Fin={fecha_fin}") # <-- AÑADIR
+
         # Verificar que la fecha de fin sea posterior a la de inicio
         if fecha_fin <= fecha_inicio:
+            print("!!! Error: Fecha de fin no es posterior a fecha de inicio") # <-- AÑADIR
             return jsonify({"error": "La fecha de fin debe ser posterior a la fecha de inicio"}), 400
-        
+
+        print("Creando objeto Cronograma...") # <-- AÑADIR
         # Crear nuevo cronograma
         nuevo_cronograma = Cronograma(
             titulo=data['titulo'],
@@ -74,11 +83,26 @@ def create_cronograma():
             color=data.get('color', '#3788d8'),
             descripcion=data.get('descripcion')
         )
-        
+        # Imprimir representación del objeto antes de añadirlo
+        print(f"Objeto Cronograma creado: {nuevo_cronograma.to_dict()}") # <-- AÑADIR
+
+        print("Añadiendo a la sesión de DB (db.session.add)...") # <-- AÑADIR
         db.session.add(nuevo_cronograma)
+
+        print("Intentando guardar en DB (db.session.commit)...") # <-- AÑADIR
         db.session.commit()
-        
+        print("--- COMMIT EXITOSO ---") # <-- AÑADIR
+
         return jsonify(nuevo_cronograma.to_dict()), 201
+
+    except ValueError as e: # Captura errores de formato de fecha
+        print(f"!!! ValueError al procesar fechas: {e}") # <-- AÑADIR
+        return jsonify({"error": "Formato de fecha inválido. Use ISO format (YYYY-MM-DDTHH:MM)"}), 400 # Ajustado formato ejemplo
+    except Exception as e: # Captura cualquier otro error
+        print(f"!!! EXCEPCIÓN GENERAL durante la creación: {e}") # <-- AÑADIR
+        print("!!! Realizando ROLLBACK de la sesión...") # <-- AÑADIR
+        db.session.rollback()
+        return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500 # Más info del error
         
     except ValueError:
         return jsonify({"error": "Formato de fecha inválido. Use ISO format (YYYY-MM-DDTHH:MM:SS)"}), 400
