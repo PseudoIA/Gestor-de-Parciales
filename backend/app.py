@@ -42,4 +42,4 @@ app = create_app()
 if __name__ == '__main__':
     # Ejecuta con el servidor de desarrollo de Flask localmente
     # Nota: Azure NO usará este bloque __main__
-    app.run(debug=False, port=5009)
+    app.run(debug=False, port=5000)
