@@ -53,18 +53,25 @@ class Cronograma(db.Model):
     color = db.Column(db.String(20), default='#3788d8')
     descripcion = db.Column(db.Text, nullable=True)
     fecha_creacion = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    # Clave foránea al usuario
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
     
     def __init__(self, titulo, materia, fecha_inicio, fecha_fin, usuario_id, color='#3788d8', descripcion=None):
+        print(f"\n=== CREACIÓN DE CRONOGRAMA ===")
+        print(f"Datos recibidos:")
+        print(f"- Título: {titulo}")
+        print(f"- Materia: {materia}")
+        print(f"- Usuario ID: {usuario_id} (tipo: {type(usuario_id)})")
+        
         self.titulo = titulo
         self.materia = materia
         self.fecha_inicio = fecha_inicio
         self.fecha_fin = fecha_fin
-        self.usuario_id = usuario_id
+        self.usuario_id = int(usuario_id)  # Asegurar que sea entero
         self.color = color
         self.descripcion = descripcion
+        
+        print(f"Cronograma inicializado:")
+        print(f"- ID Usuario asignado: {self.usuario_id} (tipo: {type(self.usuario_id)})")
     
     def to_dict(self):
         """Convertir a diccionario para API y formato FullCalendar"""

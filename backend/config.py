@@ -14,7 +14,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     
     if not SQLALCHEMY_DATABASE_URI:
-        raise ValueError("❌ ERROR: La variable de entorno DATABASE_URL no está definida. Configúrala en el archivo .env.")
+        raise ValueError("❌ ERROR: La variable de entorno DATABASE_URL no está definida. Configúrala en el archivo .env")
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     

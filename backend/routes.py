@@ -113,26 +113,30 @@ def create_cronograma():
 @cronogramas_bp.route('/<int:cronograma_id>', methods=['PUT'])
 @jwt_required()
 def update_cronograma(cronograma_id):
-    """Editar un cronograma (maestro: solo propios, coordinador: todos)"""
-    usuario_id = get_jwt_identity()
+    """Editar un cronograma (propietario o coordinador)."""
+    identity = get_jwt_identity()
     data = request.get_json()
-    
-    # Buscar el cronograma
+
+    try:
+        usuario_id_actual = int(identity)
+    except ValueError:
+        return jsonify({"error": "Identidad de usuario inválida en el token"}), 400
+
     cronograma = Cronograma.query.get(cronograma_id)
     if not cronograma:
         return jsonify({"error": "Cronograma no encontrado"}), 404
-    
-    # Verificar permisos
-    usuario = Usuario.query.get(usuario_id)
-    if not usuario:
-        return jsonify({"error": "Usuario no encontrado"}), 404
-    
-    # Si no es coordinador y no es el dueño del cronograma, denegar acceso
-    if usuario.rol != 'coordinador' and cronograma.usuario_id != usuario_id:
+
+    usuario_actual = Usuario.query.get(usuario_id_actual)
+    if not usuario_actual:
+        return jsonify({"error": "Usuario autenticado no encontrado en la base de datos"}), 404
+
+    es_propietario = (usuario_id_actual == cronograma.usuario_id)
+    es_coordinador = (usuario_actual.rol == 'coordinador')
+
+    if not (es_propietario or es_coordinador):
         return jsonify({"error": "No tienes permiso para editar este cronograma"}), 403
-    
+
     try:
-        # Actualizar campos
         if 'titulo' in data:
             cronograma.titulo = data['titulo']
         if 'materia' in data:
@@ -145,47 +149,51 @@ def update_cronograma(cronograma_id):
             cronograma.color = data['color']
         if 'descripcion' in data:
             cronograma.descripcion = data['descripcion']
-        
-        # Verificar que la fecha de fin sea posterior a la de inicio
+
         if cronograma.fecha_fin <= cronograma.fecha_inicio:
+            db.session.rollback()
             return jsonify({"error": "La fecha de fin debe ser posterior a la fecha de inicio"}), 400
-        
+
         db.session.commit()
-        
         return jsonify(cronograma.to_dict()), 200
-        
+
     except ValueError:
-        return jsonify({"error": "Formato de fecha inválido. Use ISO format (YYYY-MM-DDTHH:MM:SS)"}), 400
+        db.session.rollback()
+        return jsonify({"error": "Formato de fecha inválido. Use ISO format (YYYY-MM-DDTHH:MM)"}), 400
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": f"Error interno del servidor durante la actualización: {str(e)}"}), 500
 
 @cronogramas_bp.route('/<int:cronograma_id>', methods=['DELETE'])
 @jwt_required()
 def delete_cronograma(cronograma_id):
-    """Eliminar un cronograma (maestro: solo propios, coordinador: todos)"""
-    usuario_id = get_jwt_identity()
-    
-    # Buscar el cronograma
-    cronograma = Cronograma.query.get(cronograma_id)
-    if not cronograma:
-        return jsonify({"error": "Cronograma no encontrado"}), 404
-    
-    # Verificar permisos
-    usuario = Usuario.query.get(usuario_id)
-    if not usuario:
-        return jsonify({"error": "Usuario no encontrado"}), 404
-    
-    # Si no es coordinador y no es el dueño del cronograma, denegar acceso
-    if usuario.rol != 'coordinador' and cronograma.usuario_id != usuario_id:
-        return jsonify({"error": "No tienes permiso para eliminar este cronograma"}), 403
-    
+    """Eliminar un cronograma (propietario o coordinador)."""
+    identity = get_jwt_identity()
+
     try:
+        usuario_id_actual = int(identity)
+    except ValueError:
+        return jsonify({"error": "Identidad de usuario inválida en el token"}), 400
+
+    try:
+        cronograma = Cronograma.query.get(cronograma_id)
+        if not cronograma:
+            return jsonify({"error": "Cronograma no encontrado"}), 404
+
+        usuario_actual = Usuario.query.get(usuario_id_actual)
+        if not usuario_actual:
+            return jsonify({"error": "Usuario autenticado no encontrado en la base de datos"}), 404
+
+        es_propietario = (usuario_id_actual == cronograma.usuario_id)
+        es_coordinador = (usuario_actual.rol == 'coordinador')
+
+        if not (es_propietario or es_coordinador):
+            return jsonify({"error": "No tienes permiso para eliminar este cronograma"}), 403
+
         db.session.delete(cronograma)
         db.session.commit()
-        
         return jsonify({"mensaje": "Cronograma eliminado exitosamente"}), 200
-        
+
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": str(e)}), 500 
+        return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500
