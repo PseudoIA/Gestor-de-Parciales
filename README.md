@@ -108,30 +108,30 @@ Aplicación web diseñada para la gestión eficiente de cronogramas de actividad
 -   **Producción:** Azure SQL Database (u otra base de datos relacional compatible con SQLAlchemy).
 
 ## Estructura del Proyecto
-
-/
+```
+cronogramas-universitarios/
 ├── backend/                # Contiene el código de la API RESTful (Flask)
-│   ├── app.py              # Punto de entrada principal de la aplicación Flask, configuración inicial y registro de Blueprints.
-│   ├── models.py           # Define los modelos de datos SQLAlchemy (Usuario, Cronograma) y sus relaciones.
-│   ├── routes.py           # Define los endpoints (rutas) de la API para autenticación y operaciones CRUD de cronogramas.
-│   ├── auth.py             # Contiene la lógica específica para el registro, login y verificación de usuarios (JWT).
-│   ├── database.py         # Inicializa la conexión con la base de datos (SQLAlchemy) y configura Flask-Migrate.
-│   ├── config.py           # Carga la configuración de la aplicación (ej. claves secretas, URL de BD) desde variables de entorno (.env).
+│   ├── app.py              # Punto de entrada principal de la aplicación Flask y registro de Blueprints.
+│   ├── models.py           # Define los modelos de datos SQLAlchemy (Usuario, Cronograma).
+│   ├── routes.py           # Define los endpoints de la API para autenticación y CRUD de cronogramas.
+│   ├── auth.py             # Contiene la lógica específica para autenticación (registro, login, JWT).
+│   ├── database.py         # Configura e inicializa la conexión con la base de datos (SQLAlchemy, Migrate).
+│   ├── config.py           # Carga la configuración de la aplicación desde variables de entorno (.env).
 │   ├── requirements.txt    # Lista las dependencias de Python necesarias para el backend.
-│   └── .env                # Archivo (NO versionado) para almacenar variables de entorno (claves secretas, URL de BD, etc.).
+│   └── .env                # Archivo para almacenar variables de entorno sensibles (NO versionado).
 │
 ├── frontend/               # Contiene el código de la interfaz de usuario (cliente web)
-│   ├── assets/             # (Opcional) Podría contener CSS adicional, imágenes, fuentes, etc.
-│   ├── index.html          # Página de inicio de sesión (login) para los usuarios.
-│   ├── register.html       # Página de registro para nuevos usuarios.
-│   ├── dashboard.html      # Página principal de la aplicación donde se muestra el calendario y el formulario de gestión.
-│   ├── api.js              # Módulo JavaScript para realizar llamadas a la API del backend (configura la URL base de la API).
-│   ├── main.js             # Lógica principal de JavaScript del frontend (manejo de eventos, FullCalendar, interacción con API, lógica de UI).
-│   └── styles.css          # Hoja de estilos CSS personalizada para la apariencia visual de la aplicación (tema "cyberpunk").
+│   ├── assets/             # Directorio para recursos estáticos como imágenes o CSS adicional (si aplica).
+│   ├── index.html          # Página de inicio de sesión (login).
+│   ├── register.html       # Página de registro de nuevos usuarios.
+│   ├── dashboard.html      # Página principal con el calendario y formulario de gestión.
+│   ├── api.js              # Módulo JavaScript para realizar las llamadas a la API del backend.
+│   ├── main.js             # Contiene la lógica principal de JavaScript del frontend (FullCalendar, eventos, UI).
+│   └── styles.css          # Hoja de estilos CSS personalizada para la apariencia visual.
 │
-├── .gitignore              # Especifica qué archivos y directorios deben ser ignorados por el control de versiones Git.
-└── README.md               # Este archivo de documentación.
-
+├── .gitignore              # Especifica los archivos y directorios ignorados por Git.
+└── README.md               # Archivo de documentación principal del proyecto (este mismo).
+```
 ## Instalación y Ejecución Local
 
 ### Requisitos Previos
