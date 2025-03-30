@@ -25,7 +25,7 @@ def init_db(app):
             db.create_all()
             print("✅ Base de datos inicializada correctamente.")
         except Exception as e:
-            print(f"❌ Error al inicializar la base de datos: {str(e)}")
+            print(f" Error al inicializar la base de datos: {str(e)}")
             raise e
     
     print("=== FIN DE INICIALIZACIÓN ===\n")

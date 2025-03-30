@@ -8,4 +8,5 @@ sqlalchemy
 gunicorn
 bcrypt
 gunicorn
-pyodbc         
+pyodbc
+flask_jwt_extended

@@ -90,10 +90,10 @@ function setupCalendar() {
         },
         initialView: 'dayGridMonth',
         locale: 'es',
-        height: 'auto',
+        height: 'parent',
         selectable: true,
         navLinks: true,
-        editable: false,
+        editable: true,
         dayMaxEvents: true,
         events: function(info, successCallback, failureCallback) {
             api.getCronogramas()

@@ -1,7 +1,7 @@
 /**
  * API para comunicarse con el backend
  */
-const API_URL = 'http://localhost:5000'; // Cambiar a la URL de producción cuando se despliega
+const API_URL = 'https://demo2-cronograma.azurewebsites.net'; // Cambiar a la URL de producción cuando se despliega
 
 const api = {
     /**

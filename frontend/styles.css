@@ -1,118 +1,507 @@
-/* Estilos personalizados para Cronogramas Universitarios */
+/**************************************************
+ * TEMA  PARA CRONOGRAMAS UNIVERSITARIOS
+ * Versión: 1.0
+ * 
+ * ESTRUCTURA DE ESTILOS:
+ * 1. Variables Globales
+ * 2. Estilos Base (Body)
+ * 3. Componentes de Navegación
+ * 4. Componentes de Tarjetas
+ * 5. Formularios e Inputs
+ * 6. Botones
+ * 7. Calendario
+ * 8. Modales
+ * 9. Responsividad
+ * 10. Utilidades
+ **************************************************/
 
-/* Estilos generales */
+/* --- Variables Globales --- */
+/* Define la paleta de colores principal del tema cyberpunk
+ * --cyber-purple-500: Color principal para elementos interactivos
+ * --cyber-purple-300: Color para textos secundarios y hover states
+ * --cyber-purple-400: Color para elementos destacados
+ * --cyber-purple-600: Color para estados activos
+ * --cyber-purple-900: Color para fondos oscuros
+ * --cyber-slate-900: Color base para fondos
+ */
+:root {
+    --cyber-purple-500: #a855f7;
+    --cyber-purple-300: #d8b4fe;
+    --cyber-purple-400: #c084fc;
+    --cyber-purple-600: #9333ea;
+    --cyber-purple-900: #4b1575;
+    --cyber-slate-900: #1f0025;
+}
+
+/* --- Estilos Generales (Body) --- */
+/* Configuración base del documento:
+ * - Tipografía principal
+ * - Fondo con gradiente
+ * - Color de texto base
+ * - Altura mínima para asegurar cobertura completa
+ */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f7fa;
+    background-color: var(--cyber-slate-900);
+    background-image: linear-gradient(to right, var(--cyber-slate-900), var(--cyber-purple-900), var(--cyber-slate-900));
+    color: #e0e0e0;
+    min-height: 100vh; /* 1. Asegura que el body ocupe AL MENOS toda la altura de la ventana */
+    display: flex; /* 2. Convierte el body en un contenedor Flexbox */
+    flex-direction: column; /* 3. Apila los hijos directos del body (como tu .container) verticalmente */
+    font-size: 16px;
 }
 
-.card {
-    border-radius: 10px;
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+body > .container {
+    margin-top: auto; /* 4. Empuja el contenedor hacia abajo tanto como sea posible */
+    margin-bottom: auto; /* 5. Empuja el contenedor hacia arriba tanto como sea posible */
+    /* Opcional: Añadir un poco de padding vertical por si acaso */
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+/* --- Ajuste de Ancho Máximo para Contenido del Dashboard --- */
+.dashboard-container {
+    /* Establece un ancho máximo más restrictivo que el default de Bootstrap para XXL */
+    max-width: 1200px;
+
+    /* Las siguientes líneas aseguran que el contenedor se centre si la pantalla es más ancha que max-width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- Estilos Navbar --- */
+/* Barra de navegación con efecto glassmorphism:
+ * - Fondo semitransparente con blur
+ * - Bordes sutiles con brillo
+ * - Sombras suaves
+ * - Estados hover para interactividad
+ */
+.navbar.bg-primary {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    position: relative;
+    z-index: 1100;
+}
+.navbar .navbar-brand {
+    font-weight: bold;
+    color: var(--cyber-purple-400) !important;
+}
+.navbar .nav-link {
+    color: var(--cyber-purple-300) !important;
+}
+.navbar .nav-link:hover {
+    color: white !important;
+}
+.navbar .dropdown-menu {
+    background-color: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    z-index: 1150; /* Mayor que el navbar */
+}
+.navbar .dropdown-item {
+    color: var(--cyber-purple-300);
+}
+.navbar .dropdown-item:hover {
+    background-color: rgba(168, 85, 247, 0.2);
+    color: white;
+}
+.navbar .dropdown-item-text {
+    color: var(--cyber-purple-400);
 }
 
-.card-header {
-    border-radius: 10px 10px 0 0 !important;
+/* --- Estilos Card --- */
+/* Tarjetas con efecto glassmorphism:
+ * - Fondo semitransparente
+ * - Bordes con brillo
+ * - Efectos de hover
+ * - Transiciones suaves
+ */
+.card {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(2px);
+    border-radius: 0.5rem;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    color: #000000;
+}
+.card:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 8px 15px rgba(199, 182, 182, 0.1), 0 0 20px rgba(168, 85, 247, 0.3);
+}
+.card-header.bg-primary {
+    background-color: transparent !important;
+    color: var(--cyber-purple-300) !important;
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    
+}
+.card-header.bg-primary h5 {
+    color: var(--cyber-purple-400) !important;
 }
 
-/* Estilos del formulario */
-.form-control:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
+/* --- Estilos Formulario --- */
+/* Campos de formulario con tema oscuro:
+ * - Fondos semitransparentes
+ * - Bordes con brillo
+ * - Estados focus mejorados
+ * - Placeholders personalizados
+ * - Soporte para autofill
+ */
 
+
+/* Inputs generales y selects */
+input.form-control,
+textarea.form-control,
+select.form-select {
+    background-color: rgba(0, 0, 0, 0.3) !important; /* Fondo oscuro asegurado */
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: #FFFFFF !important; /* Texto blanco asegurado */
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+    outline: none;
+}
+input.form-control::placeholder,
+textarea.form-control::placeholder {
+    color: rgba(216, 180, 254, 0.6); /* Placeholder púrpura claro */
+}
+input.form-control:focus,
+textarea.form-control:focus,
+select.form-select:focus {
+    color: #FFFFFF !important;
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    border-color: var(--cyber-purple-500);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    outline: none;
+}
+/* Input de color */
 .form-control-color {
     width: 100%;
+    padding: 0.375rem;
+    min-height: calc(1.5em + 1.5rem + 2px);
+    border-radius: 0.375rem;
+    border: 1px solid rgba(168, 85, 247, 0.3); /* Añadir borde también */
+    background-color: rgba(0, 0, 0, 0.3); /* Fondo oscuro */
+}
+.form-control-color:hover {
+    border-color: var(--cyber-purple-500);
+    cursor: pointer;
 }
 
-/* Estilos del calendario */
+input:-webkit-autofill,
+input:-webkit-autofill:active { /* :active incluido por si acaso */
+    /* Forzar fondo oscuro */
+    -webkit-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.3) inset !important;
+    box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.3) inset !important;
+
+    /* Forzar color de texto */
+    -webkit-text-fill-color: #FFFFFF !important;
+    color: #FFFFFF !important; /* Asegurar color por si text-fill no funciona */
+
+    /* Forzar borde y radio base */
+    border: 1px solid rgba(168, 85, 247, 0.3) !important;
+    border-radius: 0.375rem !important; /* Forzar border-radius */
+
+    /* Intentar aplicar transiciones (puede ser inconsistente) */
+    transition: background-color 5000s ease-in-out 0s, /* Hack para fondo */
+                border-color 0.3s ease,
+                box-shadow 0.3s ease !important; /* Transición para borde y sombra */
+
+    caret-color: #FFFFFF !important; /* Color del cursor de texto */
+    outline: none !important; /* Asegurar sin outline */
+}
+
+/* Estado HOVER para Autofill */
+input:-webkit-autofill:hover {
+    /* Aplicamos el mismo borde que en :focus para un efecto claro */
+    border-color: var(--cyber-purple-500) !important;
+    /* Mantenemos el fondo y texto del estado base */
+    -webkit-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.3) inset !important;
+    box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.3) inset !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+/* Estado FOCUS para Autofill */
+input:-webkit-autofill:focus {
+    /* Fondo ligeramente más oscuro (simulado con sombra inset) */
+    /* Y combinamos la sombra inset con la sombra exterior del focus normal */
+    -webkit-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.4) inset, 0 0 10px rgba(168, 85, 247, 0.5) !important;
+    box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.4) inset, 0 0 10px rgba(168, 85, 247, 0.5) !important;
+
+    /* Borde púrpura intenso del focus normal */
+    border-color: var(--cyber-purple-500) !important;
+
+    /* Mantenemos color de texto y cursor */
+    -webkit-text-fill-color: #FFFFFF !important;
+    color: #FFFFFF !important;
+    caret-color: #FFFFFF !important;
+    outline: none !important;
+}
+/* --- Estilos Botones --- */
+/* Sistema de botones con efectos cyberpunk:
+ * - Fondos transparentes
+ * - Bordes con brillo
+ * - Efectos hover y active
+ * - Variantes para diferentes acciones
+ */
+/* Base para TODOS los botones */
+.btn {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.375rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+    border-width: 1px;
+    border-style: solid;
+    font-weight: 500;
+}
+
+/* Estilo Unificado para Primario/Secundario/Outline */
+.btn-primary,
+.btn-secondary,
+.btn-outline-secondary {
+    background-color: transparent;
+    color: var(--cyber-purple-300);
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: none;
+}
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-outline-secondary:hover {
+    background-color: rgba(168, 85, 247, 0.1);
+    color: var(--cyber-purple-300);
+    border-color: var(--cyber-purple-500);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
+.btn-primary:active,
+.btn-secondary:active,
+.btn-outline-secondary:active {
+    transform: scale(0.95);
+    background-color: rgba(168, 85, 247, 0.2);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
+
+/* Botón Peligro (ej: Eliminar - Mantenido) */
+.btn-outline-danger {
+    background-color: transparent;
+    color: #ff4d6d;
+    border-color: rgba(255, 77, 109, 0.4);
+}
+.btn-outline-danger:hover{
+    background-color: rgba(255, 77, 109, 0.1);
+    color: #ff4d6d;
+    border-color: #ff4d6d;
+    box-shadow: 0 0 10px rgba(255, 77, 109, 0.4);
+}
+.btn-outline-danger:active {
+    transform: scale(0.95);
+    background-color: rgba(255, 77, 109, 0.2);
+}
+
+/* --- Estilos Calendario --- */
+/* Calendario personalizado con tema cyberpunk:
+ * - Variables personalizadas para FullCalendar
+ * - Fondos y bordes consistentes
+ * - Efectos hover en días y eventos
+ * - Botones y controles personalizados
+ */
+
+/* Contenedor del calendario */
+#calendar_card_body {
+    /* Calcula la altura: 100% viewport - altura navbar (aprox 60px?) - margen container (1.5rem*2?) - padding extra... */
+    height: calc(100vh - 195px);
+
+    /* Altura mínima por si acaso */
+    min-height: 756px;
+
+    /* Scroll DENTRO de este div si el calendario no cabe en la altura calculada */
+    overflow-y: auto;
+
+    /* Hacemos flex para que #calendar pueda crecer */
+    display: flex;
+    flex-direction: column;
+
+    padding: 5px; /* Padding reducido */
+}
+
 #calendar {
-    padding: 10px;
+    padding: 3px;
+    flex-grow: 1;
+    --fc-border-color: rgba(168, 85, 247, 0.2);
+    --fc-button-text-color: var(--cyber-purple-500);
+    --fc-button-bg-color: rgba(0, 0, 0, 0.5);
+    --fc-button-border-color: rgba(168, 85, 247, 0.3);
+    --fc-button-hover-bg-color: rgba(0, 0, 0, 0.7);
+    --fc-button-hover-border-color: rgba(168, 85, 247, 0.5);
+    --fc-button-active-bg-color: rgba(0, 0, 0, 0.8);
+    --fc-today-bg-color: rgba(168, 85, 247, 0.1);
+    --fc-page-bg-color: transparent;
+    --fc-list-event-hover-bg-color: rgba(168, 85, 247, 0.1);
+}
+#calendar .fc {
+    color: #e0e0e0;
 }
 
-.fc-event {
+
+#calendar .fc-theme-standard td,
+#calendar .fc-theme-standard th {
+    border-color: var(--fc-border-color);
+}
+#calendar .fc-scrollgrid {
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    border-radius: 0.5rem;
+    border: 1px solid var(--fc-border-color);
+}
+#calendar .fc-daygrid-day {
+    transition: all 0.3s ease;
+}
+#calendar .fc-daygrid-day:hover {
+    background-color: rgba(88, 28, 135, 0.2);
+}
+#calendar .fc-col-header-cell {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: var(--cyber-purple-400);
+    border-color: var(--fc-border-color);
+}
+#calendar .fc-daygrid-day-number {
+    color: var(--cyber-purple-300);
+    padding: 4px;
+}
+#calendar .fc-toolbar-title {
+    color: var(--cyber-purple-400);
+    font-size: 1.5em !important;
+}
+#calendar .fc-button {
+    transition: all 0.3s ease;
+    color: var(--fc-button-text-color);
+    background-color: var(--fc-button-bg-color);
+    border: 1px solid var(--fc-button-border-color);
+    box-shadow: none;
+}
+#calendar .fc-button:hover {
+    background-color: var(--fc-button-hover-bg-color);
+    border-color: var(--fc-button-hover-border-color);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+}
+#calendar .fc-button:active,
+#calendar .fc-button-primary:active {
+    background-color: var(--fc-button-active-bg-color);
+    border-color: var(--fc-button-hover-border-color);
+}
+#calendar .fc-button-primary:disabled {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(168, 85, 247, 0.1);
+    color: rgba(168, 85, 247, 0.3);
+}
+#calendar .fc-day-today {
+    background-color: var(--fc-today-bg-color) !important;
+}
+#calendar .fc-event {
+    background-color: rgba(147, 51, 234, 0.7);
+    border: 1px solid var(--cyber-purple-500);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
     cursor: pointer;
     border-radius: 3px;
     padding: 3px;
     margin: 2px 0;
-    border: none;
-}
-
-.fc-day-today {
-    background-color: #f0f7ff !important;
-}
-
-.fc-toolbar-title {
-    font-size: 1.5em !important;
-}
-
-/* Estilos para el modal */
-.modal-header {
-    background-color: #0d6efd;
     color: white;
 }
-
-.modal-body h4 {
-    color: #0d6efd;
-    margin-bottom: 15px;
+#calendar .fc-event:hover {
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    opacity: 0.9;
 }
 
-/* Estilos responsivos */
+/* --- Estilos Modal --- */
+/* Ventanas modales con efecto glassmorphism:
+ * - Fondos semitransparentes con blur
+ * - Cabeceras destacadas
+ * - Contenido con contraste
+ * - Botones de cierre personalizados
+ */
+.modal-content {
+    background-color: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: #e0e0e0;
+}
+.modal-header {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: var(--cyber-purple-400);
+    border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+}
+.modal-body h4 {
+    color: var(--cyber-purple-400);
+    margin-bottom: 15px;
+    font-size: 130%;
+    
+}
+.modal-body strong {
+    color: var(--cyber-purple-300);
+}
+.modal-footer {
+    border-top: none; /* Sobrescribe el borde por defecto de Bootstrap */
+  }
+
+.btn-close {
+    filter: invert(1) grayscale(100%) brightness(2);
+}
+
+/* --- Estilos responsivos --- */
+/* Adaptaciones para dispositivos móviles:
+ * - Ajustes de calendario
+ * - Reorganización de elementos
+ * - Tamaños de fuente adaptables
+ */
 @media (max-width: 768px) {
-    .fc-toolbar {
+    #calendar .fc-toolbar {
         flex-direction: column;
     }
-    
-    .fc-toolbar-chunk {
+    #calendar .fc-toolbar-chunk {
         margin-bottom: 10px;
     }
-    
-    .fc-toolbar-title {
+    #calendar .fc-toolbar-title {
         font-size: 1.2em !important;
     }
 }
 
-/* Animaciones */
-.card, .btn {
-    transition: all 0.3s ease;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.card:hover {
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilos para el navbar */
-.navbar {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.navbar-brand {
-    font-weight: bold;
-}
-
-/* Personalización del scrollbar */
+/* --- Personalización del scrollbar --- */
+/* Scrollbar personalizado con tema cyberpunk:
+ * - Tamaño reducido
+ * - Colores consistentes
+ * - Efectos hover
+ * - Bordes redondeados
+ */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
-
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: rgba(15, 23, 42, 0.5);
 }
-
 ::-webkit-scrollbar-thumb {
-    background: #0d6efd;
+    background: var(--cyber-purple-500);
     border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-    background: #0b5ed7;
-} 
+    background: var(--cyber-purple-400);
+    box-shadow: 0 0 5px rgba(168, 85, 247, 0.5);
+}
+
+/* --- Ajustes Adicionales --- */
+/* Estilos complementarios:
+ * - Labels consistentes
+ * - Títulos en cards
+ * - Ajustes específicos de formularios
+ */
+label {
+    color: var(--cyber-purple-300);
+}
