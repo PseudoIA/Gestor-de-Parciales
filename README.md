@@ -1,4 +1,4 @@
-# Sistema de Gestión de Cronogramas Académicos
+i# Sistema de Gestión de Cronogramas Académicos
 
 Aplicación web diseñada para la gestión eficiente de cronogramas de actividades académicas (como parciales, entregas, etc.) en un entorno universitario. Permite a los usuarios con rol de 'Maestro' administrar sus propios cronogramas, mientras que los usuarios 'Coordinador' tienen visibilidad y control sobre todos los cronogramas registrados en el sistema.
 
@@ -48,9 +48,7 @@ Aplicación web diseñada para la gestión eficiente de cronogramas de actividad
 -   **Desarrollo Local:** SQLite (configurado por defecto para facilidad de inicio).
 -   **Producción:** Azure SQL Database (u otra base de datos relacional compatible con SQLAlchemy).
 
-## Estructura del Proyecto
-
-¡Entendido! Aquí tienes una versión actualizada del archivo README.md con los cambios solicitados:
+## Estructura del Proyecto 
 
 Nombre del proyecto más formal.
 Sección de estructura del proyecto con descripción de cada archivo.
